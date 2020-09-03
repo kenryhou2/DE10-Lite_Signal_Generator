@@ -1,0 +1,53 @@
+LIBRARY IEEE;                                                  
+USE IEEE.STD_LOGIC_1164.ALL;                     
+USE IEEE.std_logic_unsigned.ALL;
+                   
+ENTITY signal_generator IS                                        
+     PORT
+     (
+          clk:in STD_LOGIC;                                   
+          led:out STD_LOGIC
+     );     
+END signal_generator;
+                                              
+ARCHITECTURE rtl OF signal_generator IS 
+
+constant	c_CNT_2HZ	:	natural := 125000000;
+signal r_CNT_2HZ		:	natural	range 0 to c_CNT_2HZ;   
+signal r_TOGGLE_2HZ	:	std_logic	:= '0';
+                                    
+BEGIN                                                                  
+--P1:PROCESS (clk)                                              
+--VARIABLE count:INTEGER RANGE 0 TO 19999999;
+--BEGIN                                                                
+--    IF clk'EVENT AND clk='1' THEN
+--		IF count<=9999999 THEN                           
+--			led<='0';
+--			count:=count+1;                          
+--		ELSIF count>=9999999 AND count<=19999999 THEN
+--			led<='1';
+--			count:=count+1;
+--		ELSE
+--			count:=0;
+--		END IF;                                                      
+--     END IF;                                          
+--END PROCESS;   
+--      
+
+
+
+
+P1:PROCESS(clk)
+begin
+	if rising_edge(clk) then
+		if r_CNT_2HZ = c_CNT_2HZ-1 then
+				r_TOGGLE_2HZ <= not r_TOGGLE_2HZ;
+				r_CNT_2HZ <= 0;
+		else
+				r_CNT_2HZ <= r_CNT_2HZ + 1;
+		end if;
+	end if;
+end process P1;  
+
+led <= r_TOGGLE_2HZ;               
+END rtl;
